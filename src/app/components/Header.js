@@ -6,7 +6,7 @@ export default function Header() {
       </h1>
 
       <p className="mt-4 text-lg text-slate-600 max-w-2xl">
-        Analyses GitHub profiles to create capability insights based on evidence from the GitHub API.
+        Analyses GitHub profiles to create capability insights based on evidence from the GitHub portfolio.
       </p>
     </header>
   );
