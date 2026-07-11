@@ -145,3 +145,4 @@ export default function Home() {
 // analyse button for future is <button>
 // <input /> for text input for user - need to make it work to remember what user types (in this case the Github username)
 // console.log(username) is a placeholder for future functionality to analyse the username entered by the user
+// add logic to create the capability skillset for the user to enter a Github username and then click the analyse button to fetch the profile data from the Github API and display it on the page. The useState hook is used to store the username input and the profile data fetched from the API. The analyseProfile function is called when the user clicks the analyse button, which checks if the input is empty, fetches the profile data from the Github API, and updates the profile state with the fetched data. If the user is not found or there is an error, appropriate alerts are shown. The profile data is then displayed on the page if it exists.
