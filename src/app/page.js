@@ -16,6 +16,9 @@ export default function Home() {
   // GitHub profile data
   const [profile, setProfile] = useState(null);
 
+  // Loading state
+  const [loading, setLoading] = useState(false);
+
   // Analyse GitHub profile
   async function analyseProfile() {
 
@@ -24,6 +27,8 @@ export default function Home() {
       alert("Please enter a GitHub username.");
       return;
     }
+    
+    setLoading(true);
 
     try {
 
