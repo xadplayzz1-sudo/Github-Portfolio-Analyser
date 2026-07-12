@@ -1,6 +1,6 @@
-import SearchBar from "./components/Searchbar";
-
 "use client";
+
+import SearchBar from "./components/Searchbar";
 
 // React hook = store data
 import { useState } from "react";
