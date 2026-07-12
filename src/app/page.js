@@ -1,3 +1,5 @@
+import SearchBar from "./components/Searchbar";
+
 "use client";
 
 // React hook = store data
@@ -61,25 +63,12 @@ export default function Home() {
       {/* Page header */}
       <Header />
 
-      {/* Search section */}
-      <div className="mt-10 flex gap-4 w-full max-w-xl">
-
-        <input
-          type="text"
-          placeholder="Enter GitHub username..."
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-          className="flex-1 rounded-lg border border-slate-300 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-        <button
-          onClick={analyseProfile}
-          className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white hover:bg-blue-700 transition"
-        >
-          Analyse
-        </button>
-
-      </div>
+      <SearchBar
+        username={username}
+        setUsername={setUsername}
+        analyseProfile={analyseProfile}
+        loading={loading}
+      />
 
       {/* Show after search */}
       {profile && (
