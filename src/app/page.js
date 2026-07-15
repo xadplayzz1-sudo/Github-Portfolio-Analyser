@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import RepositoryList from "./components/RepositoryList";
 import Header from "./components/Header";
 import SearchBar from "./components/Searchbar";
 import ProfileCard from "./components/ProfileCard";
@@ -11,6 +12,7 @@ export default function Home() {
   const [username, setUsername] = useState("");
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [repositories, setRepositories] = useState([]);
 
   async function analyseProfile() {
 
@@ -38,6 +40,13 @@ export default function Home() {
 
       setProfile(data);
 
+      const repoResponse = await fetch(
+        `https://api.github.com/users/${username}/repos`
+      );
+
+      const repoData = await repoResponse.json();
+
+      setRepositories(repoData);
     } catch (error) {
 
       console.error(error);
@@ -67,7 +76,11 @@ export default function Home() {
           profile={profile}
         />
       )}
-
+      {repositories.length > 0 && (
+        <RepositoryList
+          repositories={repositories}
+        />
+      )}
     </main>
 
   );
