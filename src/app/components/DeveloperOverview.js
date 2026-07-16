@@ -5,60 +5,104 @@ export default function DeveloperOverview({
 
 }) {
 
-  // Count the occurrence of each language
-  const languages = {};
+  // Store detected skills
+  const skills = new Set();
 
-  repositories.forEach(repo => {
+  // Check every repository
+  repositories.forEach((repo) => {
 
-    if (repo.language) {
+    const language = repo.language?.toLowerCase() || "";
 
-      languages[repo.language] =
-        (languages[repo.language] || 0) + 1;
+    const description = (
+      repo.description || ""
+    ).toLowerCase();
 
+    const name = repo.name.toLowerCase();
+
+    // Detect programming languages
+
+    if (language === "javascript") skills.add("JavaScript");
+    if (language === "typescript") skills.add("TypeScript");
+    if (language === "python") skills.add("Python");
+    if (language === "java") skills.add("Java");
+    if (language === "c#") skills.add("C#");
+    if (language === "c++") skills.add("C++");
+    if (language === "html") skills.add("HTML");
+    if (language === "css") skills.add("CSS");
+
+    // Detect frameworks
+
+    if (
+      description.includes("react") ||
+      name.includes("react")
+    ) {
+      skills.add("React");
+    }
+
+    if (
+      description.includes("next") ||
+      name.includes("next")
+    ) {
+      skills.add("Next.js");
+    }
+
+    if (
+      description.includes("node") ||
+      name.includes("node")
+    ) {
+      skills.add("Node.js");
     }
 
   });
-
-  // Find the three most frequently used languages
-  const topLanguages = Object.entries(languages)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 3)
-    .map(item => item[0]);
-
-  // Calculate the total number of stars across all repositories
-  const totalStars = repositories.reduce(
-
-    (sum, repo) => sum + repo.stargazers_count,
-
-    0
-
-  );
 
   return (
 
     <div className="mt-8 mb-10 w-full max-w-xl rounded-xl bg-blue-600 p-6 text-white shadow-lg">
 
-      {/* Section heading */}
       <h2 className="text-2xl font-bold">
-        Developer Overview
+
+        Developer Capability Profile
+
       </h2>
 
-      {/* Summary of developer activity */}
       <p className="mt-4">
-        {profile.name || profile.login} has {repositories.length} public repositories.
+
+        Based on the analysed GitHub repositories, the following capabilities were identified.
+
       </p>
 
-      <p className="mt-2">
-        Primary technologies: {topLanguages.join(", ") || "None"}
-      </p>
+      <div className="mt-6 flex flex-wrap gap-3">
 
-      <p className="mt-2">
-        Total GitHub stars: {totalStars}
-      </p>
+        {[...skills].map((skill) => (
 
-      <p className="mt-2">
-        Followers: {profile.followers}
-      </p>
+          <span
+            key={skill}
+            className="rounded-full bg-white px-4 py-2 text-blue-700 font-semibold"
+          >
+
+            {skill}
+
+          </span>
+
+        ))}
+
+      </div>
+
+      <div className="mt-6">
+
+        <p>
+          <strong>Developer:</strong> {profile.name || profile.login}
+        </p>
+
+        <p>
+          <strong>Repositories Analysed:</strong> {repositories.length}
+        </p>
+
+        <p>
+          <strong>Capabilities Identified:</strong> {skills.size}
+        </p>
+
+      </div>
 
     </div>
 
