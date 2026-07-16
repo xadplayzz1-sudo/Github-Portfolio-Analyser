@@ -1,29 +1,27 @@
-export default function SearchBar({
+"use client";
+
+export default function Searchbar({
   username,
   setUsername,
-  analyseProfile,
-  loading,
+  analyseProfile
 }) {
-  return (
-    <div className="mt-10 flex gap-4 w-full max-w-xl">
 
-      {/* GitHub username */}
+  return (
+    <div className="flex justify-center gap-3 mt-6">
 
       <input
-        type="text"
+        className="border p-3 rounded text-black"
         placeholder="Enter GitHub username..."
         value={username}
         onChange={(event) => setUsername(event.target.value)}
-        className="flex-1 rounded-lg border border-slate-300 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
-      {/* Analyse button */}
 
       <button
+        className="bg-black text-white px-5 rounded"
         onClick={analyseProfile}
-        className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
       >
-        {loading ? "Loading..." : "Analyse"}
+        Analyse
       </button>
 
     </div>
