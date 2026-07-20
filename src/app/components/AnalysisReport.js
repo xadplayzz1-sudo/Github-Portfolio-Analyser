@@ -1,111 +1,221 @@
-export default function AnalysisReport({
+export default function AnalysisReport({ profile, repositories }) {
 
-    profile,
-    repositories
-
-}) {
-
-    if (!profile || !repositories.length) return null;
+  // Counts how often each programming language appears
+  function analyseLanguages() {
 
     const languages = {};
 
     repositories.forEach((repo) => {
 
-        if (repo.language) {
+      if (repo.language) {
 
-            languages[repo.language] =
-                (languages[repo.language] || 0) + 1;
-
+        if (languages[repo.language]) {
+          languages[repo.language]++;
+        } else {
+          languages[repo.language] = 1;
         }
+
+      }
 
     });
 
-    const skills = Object.keys(languages);
 
-    return (
+    return Object.entries(languages)
+      .sort((a, b) => b[1] - a[1]);
 
-        <div className="bg-white shadow rounded p-6 m-6">
+  }
 
-            <h2 className="text-2xl font-bold">
 
-                Capability Analysis Report
+  // Creates capability scores based on GitHub evidence
+  function generateCapabilities() {
 
-            </h2>
+    const languageCount = analyseLanguages();
 
-            <p className="mt-2">
+    const capabilities = [];
 
-                Developer: {profile.login}
 
-            </p>
-
-            <p>
-
-                Repositories Analysed: {repositories.length}
-
-            </p>
-
-            <h3 className="text-xl font-bold mt-6">
-
-                Technical Skillset
-
-            </h3>
-
-            <ul className="list-disc ml-6">
-
-                {skills.map((skill) => (
-
-                    <li key={skill}>
-
-                        {skill} ({languages[skill]} repositories)
-
-                    </li>
-
-                ))}
-
-            </ul>
-
-            <h3 className="text-xl font-bold mt-6">
-
-                Capability Insights
-
-            </h3>
-
-            <ul className="list-disc ml-6">
-
-                {repositories.length >= 5 && (
-                    <li>
-                        Experience working on multiple software projects.
-                    </li>
-                )}
-
-                {languages.JavaScript && (
-                    <li>
-                        Strong JavaScript development capability.
-                    </li>
-                )}
-
-                {languages.Python && (
-                    <li>
-                        Demonstrates Python programming skills.
-                    </li>
-                )}
-
-                {languages.Java && (
-                    <li>
-                        Demonstrates Java software development.
-                    </li>
-                )}
-
-                {profile.followers >= 10 && (
-                    <li>
-                        Active GitHub community presence.
-                    </li>
-                )}
-
-            </ul>
-
-        </div>
-
+    // Programming score
+    let programmingScore = Math.min(
+      repositories.length * 5,
+      100
     );
+
+
+    capabilities.push({
+      name: "Programming Skills",
+      score: programmingScore,
+      evidence:
+        `${repositories.length} public repositories analysed`
+    });
+
+
+
+    // Language score
+    if (languageCount.length > 0) {
+
+      capabilities.push({
+        name: "Technical Variety",
+        score: Math.min(languageCount.length * 20, 100),
+        evidence:
+          `Uses ${languageCount.length} different programming languages`
+      });
+
+    }
+
+
+
+    // Project experience
+    const projectsScore = Math.min(
+      repositories.filter(
+        repo => repo.description
+      ).length * 10,
+      100
+    );
+
+
+    capabilities.push({
+      name: "Project Development",
+      score: projectsScore,
+      evidence:
+        "Based on repositories containing project information"
+    });
+
+
+
+    // Open source activity
+    capabilities.push({
+      name: "Open Source Contribution",
+      score: Math.min(
+        profile.public_repos * 5,
+        100
+      ),
+      evidence:
+        `${profile.public_repos} public GitHub repositories`
+    });
+
+
+    return capabilities;
+
+  }
+
+
+  const languages = analyseLanguages();
+  const capabilities = generateCapabilities();
+
+
+
+  return (
+
+    <section className="analysis-report">
+
+      <h2>
+        Capability Analysis Report
+      </h2>
+
+
+      <p>
+        Developer: <strong>{profile.login}</strong>
+      </p>
+
+
+      <p>
+        Repositories analysed:
+        {" "}
+        <strong>{repositories.length}</strong>
+      </p>
+
+
+
+      <h3>
+        Technical Skillset
+      </h3>
+
+
+      {
+        languages.length === 0 ? (
+
+          <p>
+            No programming languages detected.
+          </p>
+
+        ) : (
+
+          <ul>
+
+            {
+              languages.map(([language, amount]) => (
+
+                <li key={language}>
+
+                  {language}
+                  {" "}
+                  - {amount} projects
+
+                </li>
+
+              ))
+            }
+
+          </ul>
+
+        )
+      }
+
+
+
+      <h3>
+        Capability Scores
+      </h3>
+
+
+
+      {
+        capabilities.map((capability) => (
+
+          <div
+            key={capability.name}
+            style={{
+              marginBottom: "20px"
+            }}
+          >
+
+            <strong>
+              {capability.name}
+            </strong>
+
+
+            <div>
+
+              Score:
+              {" "}
+              {capability.score}%
+
+            </div>
+
+
+            <div>
+
+              Evidence:
+              {" "}
+              {capability.evidence}
+
+            </div>
+
+
+            <progress
+              value={capability.score}
+              max="100"
+            />
+
+          </div>
+
+        ))
+      }
+
+
+
+    </section>
+
+  );
 
 }
