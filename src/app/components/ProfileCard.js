@@ -1,80 +1,143 @@
-// test
 export default function ProfileCard({ profile }) {
 
-  return (
+    if (!profile) return null;
 
-    <div className="mt-10 w-full max-w-xl rounded-xl bg-white p-6 shadow-lg">
 
-      {/* Avatar */}
+    return (
 
-      <img
-        src={profile.avatar_url}
-        alt={profile.login}
-        className="mx-auto h-24 w-24 rounded-full"
-      />
+        <section className="mx-6 mb-6">
 
-      {/* Name */}
 
-      <h2 className="mt-4 text-center text-2xl font-bold text-slate-900">
-        {profile.name || profile.login}
-      </h2>
+            <div className="bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 border border-purple-100">
 
-      {/* Username */}
 
-      <p className="text-center text-slate-600">
-        @{profile.login}
-      </p>
+                <div className="flex flex-col md:flex-row gap-6 items-center">
 
-      {/* Bio */}
 
-      <p className="mt-4 text-center text-slate-700">
-        {profile.bio || "No bio available."}
-      </p>
+                    <img
 
-      {/* Stats */}
+                        src={profile.avatar_url}
 
-      <div className="mt-6 flex justify-around text-center">
+                        alt="GitHub profile"
 
-        <div>
+                        className="w-32 h-32 rounded-full border-4 border-purple-200"
 
-          <p className="text-2xl font-bold text-slate-900">
-            {profile.public_repos}
-          </p>
+                    />
 
-          <p className="text-slate-500">
-            Repositories
-          </p>
 
-        </div>
 
-        <div>
+                    <div className="flex-1 text-center md:text-left">
 
-          <p className="text-2xl font-bold text-slate-900">
-            {profile.followers}
-          </p>
 
-          <p className="text-slate-500">
-            Followers
-          </p>
+                        <h2 className="text-3xl font-bold text-gray-800">
 
-        </div>
+                            {profile.name || profile.login}
 
-        <div>
+                        </h2>
 
-          <p className="text-2xl font-bold text-slate-900">
-            {profile.following}
-          </p>
 
-          <p className="text-slate-500">
-            Following
-          </p>
 
-        </div>
+                        <p className="text-purple-600 font-medium">
 
-      </div>
+                            @{profile.login}
 
-    </div>
+                        </p>
 
-  );
+
+
+                        <p className="mt-3 text-gray-600">
+
+                            {profile.bio || "No biography provided."}
+
+                        </p>
+
+
+
+                        {
+                            profile.location && (
+
+                                <p className="mt-3 text-gray-500">
+
+                                    {profile.location}
+
+                                </p>
+
+                            )
+                        }
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+                <div className="grid grid-cols-3 gap-4 mt-8">
+
+
+                    <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 text-center">
+
+                        <p className="text-2xl font-bold text-purple-700">
+
+                            {profile.public_repos}
+
+                        </p>
+
+                        <p className="text-sm text-gray-600">
+
+                            Repositories
+
+                        </p>
+
+                    </div>
+
+
+
+                    <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-4 text-center">
+
+                        <p className="text-2xl font-bold text-blue-700">
+
+                            {profile.followers}
+
+                        </p>
+
+                        <p className="text-sm text-gray-600">
+
+                            Followers
+
+                        </p>
+
+                    </div>
+
+
+
+                    <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-4 text-center">
+
+                        <p className="text-2xl font-bold text-orange-700">
+
+                            {profile.following}
+
+                        </p>
+
+                        <p className="text-sm text-gray-600">
+
+                            Following
+
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+    );
 
 }
