@@ -1,206 +1,111 @@
-"use client";
+export default function AnalysisReport({
 
-export default function AnalysisReport({ profile, repositories }) {
+    profile,
+    repositories
 
-  // Count programming languages used across repositories
-  const languageCount = {};
+}) {
 
-  repositories.forEach((repo) => {
-    if (repo.language) {
-      languageCount[repo.language] =
-        (languageCount[repo.language] || 0) + 1;
-    }
-  });
+    if (!profile || !repositories.length) return null;
 
+    const languages = {};
 
-  // Sort languages by usage
-  const languages = Object.entries(languageCount)
-    .sort((a, b) => b[1] - a[1]);
+    repositories.forEach((repo) => {
 
+        if (repo.language) {
 
-  // Basic capability indicators
-  const capabilities = [];
+            languages[repo.language] =
+                (languages[repo.language] || 0) + 1;
 
-  if (repositories.length >= 5) {
-    capabilities.push("Consistent GitHub activity");
-  }
+        }
 
-  if (languages.length >= 3) {
-    capabilities.push("Multi-language development");
-  }
+    });
 
-  if (
-    repositories.some(
-      (repo) => repo.description
-    )
-  ) {
-    capabilities.push("Project documentation");
-  }
+    const skills = Object.keys(languages);
 
-  if (
-    repositories.some(
-      (repo) => repo.stargazers_count > 0
-    )
-  ) {
-    capabilities.push("Community engagement");
-  }
+    return (
 
+        <div className="bg-white shadow rounded p-6 m-6">
 
-  return (
-    <div className="bg-white p-6 rounded-xl shadow mt-6">
+            <h2 className="text-2xl font-bold">
 
-      {/* Title */}
-      <h2 className="text-3xl font-bold text-black">
-        Capability Analysis Report
-      </h2>
+                Capability Analysis Report
 
+            </h2>
 
-      {/* Developer Information */}
-      <div className="mt-5">
+            <p className="mt-2">
 
-        <h3 className="text-xl font-semibold text-black">
-          Developer Overview
-        </h3>
+                Developer: {profile.login}
 
-        <p className="text-black mt-2">
-          Username: {profile.login}
-        </p>
+            </p>
 
-        <p className="text-black">
-          Public repositories: {profile.public_repos}
-        </p>
+            <p>
 
-        <p className="text-black">
-          Followers: {profile.followers}
-        </p>
+                Repositories Analysed: {repositories.length}
 
-      </div>
+            </p>
 
+            <h3 className="text-xl font-bold mt-6">
 
+                Technical Skillset
 
-      {/* Repository Analysis */}
-      <div className="mt-6">
+            </h3>
 
-        <h3 className="text-xl font-semibold text-black">
-          Repository Analysis
-        </h3>
+            <ul className="list-disc ml-6">
 
-        <p className="text-black mt-2">
-          Repositories analysed: {repositories.length}
-        </p>
+                {skills.map((skill) => (
 
-      </div>
+                    <li key={skill}>
 
+                        {skill} ({languages[skill]} repositories)
 
+                    </li>
 
-      {/* Languages */}
-      <div className="mt-6">
+                ))}
 
-        <h3 className="text-xl font-semibold text-black">
-          Technical Skill Breakdown
-        </h3>
+            </ul>
 
+            <h3 className="text-xl font-bold mt-6">
 
-        {languages.length === 0 ? (
+                Capability Insights
 
-          <p className="text-black mt-2">
-            No programming languages detected.
-          </p>
+            </h3>
 
-        ) : (
+            <ul className="list-disc ml-6">
 
-          <ul className="mt-2">
+                {repositories.length >= 5 && (
+                    <li>
+                        Experience working on multiple software projects.
+                    </li>
+                )}
 
-            {languages.map(([language, count]) => (
+                {languages.JavaScript && (
+                    <li>
+                        Strong JavaScript development capability.
+                    </li>
+                )}
 
-              <li 
-                key={language}
-                className="text-black"
-              >
-                {language}: {count} repositories
-              </li>
+                {languages.Python && (
+                    <li>
+                        Demonstrates Python programming skills.
+                    </li>
+                )}
 
-            ))}
+                {languages.Java && (
+                    <li>
+                        Demonstrates Java software development.
+                    </li>
+                )}
 
-          </ul>
+                {profile.followers >= 10 && (
+                    <li>
+                        Active GitHub community presence.
+                    </li>
+                )}
 
-        )}
+            </ul>
 
-      </div>
+        </div>
 
+    );
 
-
-      {/* Capability Insights */}
-      <div className="mt-6">
-
-        <h3 className="text-xl font-semibold text-black">
-          Capability Insights
-        </h3>
-
-
-        {capabilities.length === 0 ? (
-
-          <p className="text-black mt-2">
-            Not enough data available yet.
-          </p>
-
-        ) : (
-
-          <ul className="list-disc ml-5 mt-2">
-
-            {capabilities.map((item) => (
-
-              <li 
-                key={item}
-                className="text-black"
-              >
-                {item}
-              </li>
-
-            ))}
-
-          </ul>
-
-        )}
-
-      </div>
-
-
-
-      {/* Repository List */}
-      <div className="mt-6">
-
-        <h3 className="text-xl font-semibold text-black">
-          Projects Analysed
-        </h3>
-
-
-        <ul className="mt-2">
-
-          {repositories.slice(0,5).map((repo) => (
-
-            <li 
-              key={repo.id}
-              className="text-black mb-2"
-            >
-
-              <strong>
-                {repo.name}
-              </strong>
-
-              {" - "}
-
-              {repo.language || "Unknown language"}
-
-            </li>
-
-          ))}
-
-        </ul>
-
-      </div>
-
-
-    </div>
-  );
 }
