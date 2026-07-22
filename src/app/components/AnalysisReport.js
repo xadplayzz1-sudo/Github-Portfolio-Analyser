@@ -5,15 +5,15 @@ export default function AnalysisReport({ analysis }) {
 
     return (
 
-        <section className="mx-6 mb-10 space-y-6">
+        <section className="float-in w-full max-w-[840px] space-y-4">
 
 
-            <div className="bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 border border-orange-100">
+            <div className="bg-[#fff7ec] rounded-[24px] shadow-[0_10px_26px_rgba(125,83,40,0.12)] p-5 border border-[#d9b18b] transition duration-300 hover:-translate-y-0.5">
 
 
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">
+                <h2 className="text-[1.6rem] font-bold text-gray-800 mb-2">
 
-                    AI Capability Intelligence Report
+                    Portfolio Assessment
 
                 </h2>
 
@@ -31,10 +31,10 @@ export default function AnalysisReport({ analysis }) {
 
 
 
-            <div className="bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 border border-purple-100">
+<div className="bg-[#fff8f0] rounded-3xl shadow-sm p-5 border border-[#ffc971]">
 
 
-                <h2 className="text-xl font-bold mb-5">
+                <h2 className="text-[1.1rem] font-bold mb-4">
 
                     Capability Areas
 
@@ -52,7 +52,7 @@ export default function AnalysisReport({ analysis }) {
 
                                 key={capability.name}
 
-                                className="bg-gradient-to-br from-purple-50 to-white border border-purple-100 rounded-xl p-5"
+                                className="bg-[#fffdf9] border border-[#f3c7a5] rounded-[20px] p-4 shadow-[0_5px_14px_rgba(204,88,3,0.10)]"
 
                             >
 
@@ -66,7 +66,7 @@ export default function AnalysisReport({ analysis }) {
                                     </h3>
 
 
-                                    <span className="font-bold text-purple-700">
+                                    <span className="font-bold text-slate-700">
 
                                         {capability.score}%
 
@@ -77,12 +77,12 @@ export default function AnalysisReport({ analysis }) {
 
 
 
-                                <div className="bg-gray-200 rounded-full h-3 mb-3">
+                                <div className="bg-[#efe4d5] rounded-full h-2.5 mb-3">
 
 
                                     <div
 
-                                        className="bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 h-3 rounded-full"
+                                        className="bg-[#b87a3c] h-2.5 rounded-full"
 
                                         style={{
                                             width: `${capability.score}%`
@@ -116,10 +116,10 @@ export default function AnalysisReport({ analysis }) {
 
 
 
-            <div className="bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 border border-green-100">
+            <div className="bg-[#fff7ec] rounded-[24px] shadow-[0_10px_26px_rgba(125,83,40,0.12)] p-5 border border-[#d9b18b]">
 
 
-                <h2 className="text-xl font-bold mb-4">
+                <h2 className="text-[1.1rem] font-bold mb-4">
 
                     Key Strengths
 
@@ -152,10 +152,10 @@ export default function AnalysisReport({ analysis }) {
 
 
 
-            <div className="bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 border border-blue-100">
+            <div className="bg-[#fff7ec] rounded-[24px] shadow-[0_10px_26px_rgba(125,83,40,0.12)] p-5 border border-[#d9b18b]">
 
 
-                <h2 className="text-xl font-bold mb-4">
+                <h2 className="text-[1.1rem] font-bold mb-4">
 
                     Development Recommendations
 

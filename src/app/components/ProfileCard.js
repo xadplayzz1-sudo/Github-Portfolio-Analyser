@@ -1,143 +1,33 @@
 export default function ProfileCard({ profile }) {
-
     if (!profile) return null;
 
-
     return (
+        <div className="card float-in rounded-[28px] border border-[#f3c7a5] bg-[linear-gradient(180deg,#fffdfb_0%,#fff7ec_100%)] p-5 shadow-[0_12px_30px_rgba(204,88,3,0.12)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(204,88,3,0.16)]">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
+                <img
+                    src={profile.avatar_url}
+                    alt={`${profile.login} avatar`}
+                    className="h-[130px] w-[130px] rounded-full border-4 border-[#f3c7a5] object-cover shadow-[0_8px_20px_rgba(204,88,3,0.16)]"
+                />
 
-        <section className="mx-6 mb-6">
+                <div>
+                    <h2 className="text-3xl font-bold text-[#2d1706]">
+                        {profile.name || profile.login}
+                    </h2>
 
+                    <p className="text-[#7c3502] text-lg">@{profile.login}</p>
 
-            <div className="bg-white/90 backdrop-blur rounded-2xl shadow-lg p-6 border border-purple-100">
+                    <p className="mt-3 text-lg text-[#7c3502]">
+                        {profile.bio || "No biography provided."}
+                    </p>
 
-
-                <div className="flex flex-col md:flex-row gap-6 items-center">
-
-
-                    <img
-
-                        src={profile.avatar_url}
-
-                        alt="GitHub profile"
-
-                        className="w-32 h-32 rounded-full border-4 border-purple-200"
-
-                    />
-
-
-
-                    <div className="flex-1 text-center md:text-left">
-
-
-                        <h2 className="text-3xl font-bold text-gray-800">
-
-                            {profile.name || profile.login}
-
-                        </h2>
-
-
-
-                        <p className="text-purple-600 font-medium">
-
-                            @{profile.login}
-
-                        </p>
-
-
-
-                        <p className="mt-3 text-gray-600">
-
-                            {profile.bio || "No biography provided."}
-
-                        </p>
-
-
-
-                        {
-                            profile.location && (
-
-                                <p className="mt-3 text-gray-500">
-
-                                    {profile.location}
-
-                                </p>
-
-                            )
-                        }
-
-
+                    <div className="mt-5 flex flex-wrap gap-3">
+                        <span className="badge">{profile.public_repos} repos</span>
+                        <span className="badge">{profile.followers} followers</span>
+                        <span className="badge">{profile.following} following</span>
                     </div>
-
-
                 </div>
-
-
-
-
-                <div className="grid grid-cols-3 gap-4 mt-8">
-
-
-                    <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 text-center">
-
-                        <p className="text-2xl font-bold text-purple-700">
-
-                            {profile.public_repos}
-
-                        </p>
-
-                        <p className="text-sm text-gray-600">
-
-                            Repositories
-
-                        </p>
-
-                    </div>
-
-
-
-                    <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-4 text-center">
-
-                        <p className="text-2xl font-bold text-blue-700">
-
-                            {profile.followers}
-
-                        </p>
-
-                        <p className="text-sm text-gray-600">
-
-                            Followers
-
-                        </p>
-
-                    </div>
-
-
-
-                    <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl p-4 text-center">
-
-                        <p className="text-2xl font-bold text-orange-700">
-
-                            {profile.following}
-
-                        </p>
-
-                        <p className="text-sm text-gray-600">
-
-                            Following
-
-                        </p>
-
-                    </div>
-
-
-                </div>
-
-
             </div>
-
-
-        </section>
-
+        </div>
     );
-
 }
