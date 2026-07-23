@@ -30,10 +30,12 @@
 body {
     margin: 0;
     background:
-        radial-gradient(circle at top, rgba(255, 233, 201, 0.98), rgba(255, 218, 171, 0.98) 42%),
-        linear-gradient(180deg, #fff4e2 0%, #ffe9cb 100%);
-    color: #2d1706;
-    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+        radial-gradient(circle at top, rgba(222, 235, 255, 0.95), rgba(246, 248, 250, 0.98) 35%),
+        linear-gradient(180deg, #f6f8fa 0%, #eef4ff 100%);
+    color: #24292f;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
 
 .float-in {
@@ -45,8 +47,8 @@ body {
 }
 
 ::selection {
-    background: #ffc971;
-    color: #2d1706;
+    background: #b6e3ff;
+    color: #24292f;
 }
 
 .container {
@@ -56,12 +58,12 @@ body {
 }
 
 .card {
-    background: #fffaf3;
+    background: #ffffff;
     border-radius: 24px;
     padding: 20px;
-    box-shadow: 0 8px 24px rgba(125, 83, 40, 0.08);
+    box-shadow: 0 8px 24px rgba(31, 35, 40, 0.08);
     margin-bottom: 20px;
-    border: 1px solid #e8d2b6;
+    border: 1px solid #d0d7de;
 }
 
 .title {
@@ -105,11 +107,11 @@ body {
 
 .badge {
     display: inline-block;
-    background: #fffdf9;
-    color: #7c3502;
+    background: #f6f8fa;
+    color: #57606a;
     padding: 6px 12px;
     border-radius: 999px;
     font-weight: 600;
     margin: 4px;
-    border: 1px solid #f3c7a5;
+    border: 1px solid #d0d7de;
 }

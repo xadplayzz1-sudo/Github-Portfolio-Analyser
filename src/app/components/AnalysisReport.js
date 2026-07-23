@@ -1,6 +1,8 @@
-export default function AnalysisReport({ analysis }) {
+export default function AnalysisReport({ analysis, theme }) {
 
     if (!analysis) return null;
+
+    const isDark = theme === "dark";
 
 
     return (
@@ -8,18 +10,18 @@ export default function AnalysisReport({ analysis }) {
         <section className="float-in w-full max-w-[840px] space-y-4">
 
 
-            <div className="bg-[#fff7ec] rounded-[24px] shadow-[0_10px_26px_rgba(125,83,40,0.12)] p-5 border border-[#d9b18b] transition duration-300 hover:-translate-y-0.5">
+            <div className={`rounded-[24px] p-5 border transition duration-300 hover:-translate-y-0.5 ${isDark ? "bg-[#161b22] border-[#30363d] shadow-[0_10px_26px_rgba(0,0,0,0.35)]" : "bg-white border-[#d0d7de] shadow-[0_10px_26px_rgba(31,35,40,0.08)]"}`}>
 
 
-                <h2 className="text-[1.6rem] font-bold text-gray-800 mb-2">
+                <h2 className={`text-[1.6rem] font-bold mb-2 ${isDark ? "text-[#f0f6fc]" : "text-[#24292f]"}`}>
 
-                    Portfolio Assessment
+                    Profile Overview
 
                 </h2>
 
 
 
-                <p className="text-gray-600 leading-relaxed">
+                <p className={`leading-relaxed ${isDark ? "text-[#8b949e]" : "text-[#57606a]"}`}>
 
                     {analysis.summary}
 
@@ -31,10 +33,10 @@ export default function AnalysisReport({ analysis }) {
 
 
 
-<div className="bg-[#fff8f0] rounded-3xl shadow-sm p-5 border border-[#ffc971]">
+<div className={`rounded-3xl shadow-sm p-5 border ${isDark ? "bg-[#0d1117] border-[#30363d]" : "bg-[#f6f8fa] border-[#d0d7de]"}`}>
 
 
-                <h2 className="text-[1.1rem] font-bold mb-4">
+                <h2 className={`text-[1.1rem] font-bold mb-4 ${isDark ? "text-[#f0f6fc]" : ""}`}>
 
                     Capability Areas
 
@@ -52,21 +54,21 @@ export default function AnalysisReport({ analysis }) {
 
                                 key={capability.name}
 
-                                className="bg-[#fffdf9] border border-[#f3c7a5] rounded-[20px] p-4 shadow-[0_5px_14px_rgba(204,88,3,0.10)]"
+                                className={`rounded-[20px] p-4 border ${isDark ? "bg-[#161b22] border-[#30363d] shadow-[0_5px_14px_rgba(0,0,0,0.25)]" : "bg-white border-[#d0d7de] shadow-[0_5px_14px_rgba(31,35,40,0.08)]"}`}
 
                             >
 
 
                                 <div className="flex justify-between mb-3">
 
-                                    <h3 className="font-semibold">
+                                    <h3 className={`font-semibold ${isDark ? "text-[#f0f6fc]" : ""}`}>
 
                                         {capability.name}
 
                                     </h3>
 
 
-                                    <span className="font-bold text-slate-700">
+                                    <span className={`font-bold ${isDark ? "text-[#c9d1d9]" : "text-slate-700"}`}>
 
                                         {capability.score}%
 
@@ -77,12 +79,12 @@ export default function AnalysisReport({ analysis }) {
 
 
 
-                                <div className="bg-[#efe4d5] rounded-full h-2.5 mb-3">
+                                <div className={`rounded-full h-2.5 mb-3 ${isDark ? "bg-[#30363d]" : "bg-[#d8dee4]"}`}>
 
 
                                     <div
 
-                                        className="bg-[#b87a3c] h-2.5 rounded-full"
+                                        className="bg-[#0969da] h-2.5 rounded-full"
 
                                         style={{
                                             width: `${capability.score}%`
@@ -95,7 +97,7 @@ export default function AnalysisReport({ analysis }) {
 
 
 
-                                <p className="text-sm text-gray-600">
+                                <p className={`text-sm ${isDark ? "text-[#8b949e]" : "text-[#57606a]"}`}>
 
                                     {capability.reason}
 
@@ -116,10 +118,10 @@ export default function AnalysisReport({ analysis }) {
 
 
 
-            <div className="bg-[#fff7ec] rounded-[24px] shadow-[0_10px_26px_rgba(125,83,40,0.12)] p-5 border border-[#d9b18b]">
+            <div className="bg-white rounded-[24px] shadow-[0_10px_26px_rgba(31,35,40,0.08)] p-5 border border-[#d0d7de]">
 
 
-                <h2 className="text-[1.1rem] font-bold mb-4">
+                <h2 className="text-[1.1rem] font-bold mb-4 text-[#24292f]">
 
                     Key Strengths
 
@@ -152,10 +154,10 @@ export default function AnalysisReport({ analysis }) {
 
 
 
-            <div className="bg-[#fff7ec] rounded-[24px] shadow-[0_10px_26px_rgba(125,83,40,0.12)] p-5 border border-[#d9b18b]">
+            <div className="bg-white rounded-[24px] shadow-[0_10px_26px_rgba(31,35,40,0.08)] p-5 border border-[#d0d7de]">
 
 
-                <h2 className="text-[1.1rem] font-bold mb-4">
+                <h2 className="text-[1.1rem] font-bold mb-4 text-[#24292f]">
 
                     Development Recommendations
 

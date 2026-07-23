@@ -13,6 +13,9 @@ import ProfileChat from "./components/ProfileChat";
 
 export default function Home() {
 
+    // this holds the current site theme, either light or dark
+    const [theme, setTheme] = useState("light");
+
     // this holds whatever the user types into the search box
     const [username, setUsername] = useState("");
 
@@ -184,16 +187,21 @@ export default function Home() {
 
     }
 
+    const isDark = theme === "dark";
+
     return (
 
         // main wrapper for the whole page, just keeps the layout full-height
-        <main className="min-h-screen bg-transparent">
+        <main className={`min-h-screen transition-colors duration-300 ${isDark ? "bg-[#0d1117]" : "bg-transparent"}`}>
 
             {/* this centers the whole dashboard and adds the page padding */}
             <div className="mx-auto max-w-[1180px] px-4 pb-10 pt-4 sm:px-6 lg:px-8">
 
                 {/* top logo/title block */}
-                <Header />
+                <Header
+                    theme={theme}
+                    toggleTheme={() => setTheme((current) => current === "light" ? "dark" : "light")}
+                />
 
                 {/* search form sits under the header */}
                 <Searchbar
@@ -201,12 +209,13 @@ export default function Home() {
                     setUsername={setUsername}
                     analyseProfile={searchProfiles}
                     loading={loading}
+                    theme={theme}
                 />
 
                 {/* if there’s an error, this box shows it in a red warning style */}
                 {error && (
 
-                    <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">
+                    <div className={`mt-6 rounded-xl border p-4 ${isDark ? "border-red-500/30 bg-red-500/10 text-red-200" : "border-red-200 bg-red-50 text-red-700"}`}>
 
                         {error}
 
@@ -221,18 +230,18 @@ export default function Home() {
 
                     <section className="mt-8">
 
-                        <div className="float-in rounded-[28px] border border-[#fdb988] bg-[#fff7ec] p-6 shadow-[0_10px_28px_rgba(204,88,3,0.15)]">
+                        <div className={`float-in rounded-[28px] border p-6 ${isDark ? "border-[#30363d] bg-[#161b22] shadow-[0_10px_28px_rgba(0,0,0,0.35)]" : "border-[#d0d7de] bg-white shadow-[0_10px_28px_rgba(31,35,40,0.08)]"}`}>
 
                             {/* header inside the results box */}
                             <div className="mb-5 flex items-center justify-between gap-3 flex-wrap">
 
                                 <div>
 
-                                    <h2 className="text-2xl font-bold text-[#2d1706]">
+                                    <h2 className={`text-2xl font-bold ${isDark ? "text-[#f0f6fc]" : "text-[#2d1706]"}`}>
                                         Matching GitHub profiles
                                     </h2>
 
-                                    <p className="mt-1 text-sm text-[#7c3502]">
+                                    <p className={`mt-1 text-sm ${isDark ? "text-[#8b949e]" : "text-[#57606a]"}`}>
                                         Choose the profile you want to analyse.
                                     </p>
 
@@ -248,25 +257,25 @@ export default function Home() {
                                     <button
                                         key={result.id}
                                         onClick={() => analyseProfile(result.login)}
-                                        className="flex items-center gap-4 rounded-[20px] border border-[#f3c7a5] bg-[#fffdf9] p-4 text-left shadow-[0_5px_14px_rgba(204,88,3,0.10)] transition duration-200 ease-out hover:-translate-y-1 hover:border-[#cc5803] hover:shadow-[0_14px_28px_rgba(204,88,3,0.16)]"
+                                        className={`flex items-center gap-4 rounded-[20px] border p-4 text-left transition duration-200 ease-out hover:-translate-y-1 hover:border-[#0969da] ${isDark ? "border-[#30363d] bg-[#0d1117] shadow-[0_5px_14px_rgba(0,0,0,0.25)] hover:shadow-[0_14px_28px_rgba(0,0,0,0.35)]" : "border-[#d0d7de] bg-[#f6f8fa] shadow-[0_5px_14px_rgba(31,35,40,0.08)] hover:shadow-[0_14px_28px_rgba(31,35,40,0.12)]"}`}
                                     >
 
                                         {/* avatar image for the GitHub profile */}
                                         <img
                                             src={result.avatar_url}
                                             alt={`${result.login} avatar`}
-                                            className="h-14 w-14 rounded-full border-2 border-[#f3c7a5] object-cover"
+                                            className="h-14 w-14 rounded-full border-2 border-[#d0d7de] object-cover"
                                         />
 
                                         <div>
 
                                             {/* username text shown in the card */}
-                                            <div className="text-lg font-semibold text-[#2d1706]">
+                                            <div className={`text-lg font-semibold ${isDark ? "text-[#f0f6fc]" : "text-[#24292f]"}`}>
                                                 @{result.login}
                                             </div>
 
                                             {/* small hint text so the user knows what clicking does */}
-                                            <div className="text-sm text-[#7c3502]">
+                                            <div className={`text-sm ${isDark ? "text-[#8b949e]" : "text-[#57606a]"}`}>
                                                 Open GitHub profile
                                             </div>
 
@@ -291,13 +300,7 @@ export default function Home() {
 
                     <section className="mt-14">
 
-                        <div className="float-in rounded-[32px] border border-[#f3c7a5] bg-[linear-gradient(180deg,#fffdfb_0%,#fff7ec_100%)] p-12 text-center shadow-[0_16px_40px_rgba(204,88,3,0.12)]">
-
-                            <div className="mb-5 flex justify-center">
-                                <span className="rounded-full bg-[#cc5803] px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white">
-                                    Portfolio intelligence
-                                </span>
-                            </div>
+                        <div className="float-in rounded-[32px] border border-[#d0d7de] bg-[linear-gradient(180deg,#ffffff_0%,#f6f8fa_100%)] p-12 text-center shadow-[0_16px_40px_rgba(31,35,40,0.08)]">
 
                             <div className="text-6xl mb-6">
                                 
@@ -366,11 +369,13 @@ export default function Home() {
                             <ProfileCard
                                 profile={profile}
                                 repositories={repositories}
+                                theme={theme}
                             />
 
                             <ProfileChat
                                 profile={profile}
                                 repositories={repositories}
+                                theme={theme}
                             />
 
                         </div>
@@ -381,10 +386,12 @@ export default function Home() {
                                 profile={profile}
                                 repositories={repositories}
                                 analysis={analysis}
+                                theme={theme}
                             />
 
                             <RepositoryList
                                 repositories={repositories}
+                                theme={theme}
                             />
 
                         </div>
