@@ -71,14 +71,14 @@ export default function ProfileChat({ profile, repositories, theme }) {
             <div className="mb-3">
                 <h2 className={`text-[1.3rem] font-bold ${isDark ? "text-[#f0f6fc]" : "text-slate-800"}`}>Profile Questions</h2>
                 <p className={`mt-1 text-sm ${isDark ? "text-[#8b949e]" : "text-slate-600"}`}>
-                    Ask follow-up questions about specific repositories, tech themes, or how the profile compares.
+                    Ask follow-up questions about specific repositories, tech themes, or how the profile compares to others.
                 </p>
             </div>
 
             <div className={`space-y-3 rounded-2xl p-3 max-h-72 overflow-auto ${isDark ? "bg-[#0d1117]" : "bg-[#fbf8f4]"}`}>
                 {messages.length === 0 && !loading && (
                     <p className={`text-sm ${isDark ? "text-[#8b949e]" : "text-slate-500"}`}>
-                        Example: “Which repo best shows this developer’s strengths?”
+                        Example: “Which repository best shows this developer’s strengths?”
                     </p>
                 )}
 
