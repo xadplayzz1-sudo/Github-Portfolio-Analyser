@@ -300,25 +300,30 @@ export default function Home() {
 
                     <section className="mt-14">
 
-                        <div className="float-in rounded-[32px] border border-[#d0d7de] bg-[linear-gradient(180deg,#ffffff_0%,#f6f8fa_100%)] p-12 text-center shadow-[0_16px_40px_rgba(31,35,40,0.08)]">
+                        <div
+                            className={`float-in rounded-[32px] border p-12 text-center transition-colors duration-300 ${
+                                isDark
+                                    ? "border-[#30363d] bg-[#161b22] shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+                                    : "border-[#d0d7de] bg-[linear-gradient(180deg,#ffffff_0%,#f6f8fa_100%)] shadow-[0_16px_40px_rgba(31,35,40,0.08)]"
+                            }`}
+                        >
 
-                            <div className="text-6xl mb-6">
-                                
-                            </div>
-
-                            <h2 className="text-4xl font-bold text-slate-800">
-
-                              Analyse Any GitHub Portfolio
-
+                            <h2
+                                className={`text-4xl font-bold ${
+                                    isDark ? "text-[#f0f6fc]" : "text-[#24292f]"
+                                }`}
+                            >
+                                Analyse Any GitHub Portfolio
                             </h2>
 
-                            <p className="mt-5 text-slate-600 max-w-2xl mx-auto leading-8">
-
-                                Enter a GitHub username above to generate
-                                a portfolio assessment based on
-                                public repositories, technologies,
-                                project quality and development activity.
-
+                            <p
+                                className={`mx-auto mt-5 max-w-2xl leading-8 ${
+                                    isDark ? "text-[#8b949e]" : "text-[#57606a]"
+                                }`}
+                            >
+                                Enter a GitHub username, or GitHub @, above to generate analysis of a profile
+                                based on public repositories, technologies, project quality and
+                                development activity.
                             </p>
 
                         </div>
