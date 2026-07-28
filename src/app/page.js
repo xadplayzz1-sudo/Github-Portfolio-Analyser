@@ -339,21 +339,37 @@ export default function Home() {
 
                     <section className="mt-14">
 
-                        <div className="rounded-3xl bg-white shadow-lg border border-slate-200 p-12 text-center">
+                        <div
+                            className={`rounded-[32px] border p-12 text-center transition-colors duration-300 ${
+                                isDark
+                                    ? "border-[#30363d] bg-[#161b22] shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+                                    : "border-[#d0d7de] bg-white shadow-[0_16px_40px_rgba(31,35,40,0.08)]"
+                            }`}
+                        >
 
-                            {/* spinner is the simple animated bit on the page while the app is fetching data */}
-                            <div className="w-16 h-16 mx-auto rounded-full border-4 border-slate-200 border-t-indigo-600 animate-spin" />
+                            {/* Spinner shown while the analysis is running */}
+                            <div
+                                className={`mx-auto h-16 w-16 animate-spin rounded-full border-4 ${
+                                    isDark
+                                        ? "border-[#30363d] border-t-[#58a6ff]"
+                                        : "border-[#d0d7de] border-t-[#0969da]"
+                                }`}
+                            />
 
-                            <h2 className="mt-8 text-3xl font-bold text-slate-800">
-
+                            <h2
+                                className={`mt-8 text-3xl font-bold ${
+                                    isDark ? "text-[#f0f6fc]" : "text-[#24292f]"
+                                }`}
+                            >
                                 Analysing Portfolio...
-
                             </h2>
 
-                            <p className="mt-3 text-slate-500">
-
-                                Generating capability report...
-
+                            <p
+                                className={`mt-3 ${
+                                    isDark ? "text-[#8b949e]" : "text-[#57606a]"
+                                }`}
+                            >
+                                Fetching repositories, analysing activity and generating a capability report...
                             </p>
 
                         </div>
