@@ -9,7 +9,11 @@ export default function ProfileCard({ profile, theme }) {
                 <img
                     src={profile.avatar_url}
                     alt={`${profile.login} avatar`}
-                    className="h-[130px] w-[130px] rounded-full border-4 border-[#d0d7de] object-cover shadow-[0_8px_20px_rgba(31,35,40,0.12)]"
+                    className={`h-[130px] w-[130px] rounded-full border-4 object-cover ${
+                        isDark
+                            ? "border-[#30363d] shadow-[0_8px_20px_rgba(0,0,0,0.35)]"
+                            : "border-[#d0d7de] shadow-[0_8px_20px_rgba(31,35,40,0.12)]"
+                    }`}
                 />
 
                 <div>
@@ -24,9 +28,35 @@ export default function ProfileCard({ profile, theme }) {
                     </p>
 
                     <div className="mt-5 flex flex-wrap gap-3">
-                        <span className={`badge ${isDark ? "border-[#30363d] bg-[#0d1117] text-[#f0f6fc]" : ""}`}>{profile.public_repos} repos</span>
-                        <span className={`badge ${isDark ? "border-[#30363d] bg-[#0d1117] text-[#f0f6fc]" : ""}`}>{profile.followers} followers</span>
-                        <span className={`badge ${isDark ? "border-[#30363d] bg-[#0d1117] text-[#f0f6fc]" : ""}`}>{profile.following} following</span>
+                        <span
+                            className={`rounded-full border px-3 py-1 text-sm font-medium ${
+                                isDark
+                                    ? "border-[#30363d] bg-[#0d1117] text-[#f0f6fc]"
+                                    : "border-[#d0d7de] bg-[#f6f8fa] text-[#57606a]"
+                            }`}
+                        >
+                            {profile.public_repos} repos
+                        </span>
+
+                        <span
+                            className={`rounded-full border px-3 py-1 text-sm font-medium ${
+                                isDark
+                                    ? "border-[#30363d] bg-[#0d1117] text-[#f0f6fc]"
+                                    : "border-[#d0d7de] bg-[#f6f8fa] text-[#57606a]"
+                            }`}
+                        >
+                            {profile.followers} followers
+                        </span>
+
+                        <span
+                            className={`rounded-full border px-3 py-1 text-sm font-medium ${
+                                isDark
+                                    ? "border-[#30363d] bg-[#0d1117] text-[#f0f6fc]"
+                                    : "border-[#d0d7de] bg-[#f6f8fa] text-[#57606a]"
+                            }`}
+                        >
+                            {profile.following} following
+                        </span>
                     </div>
                 </div>
             </div>
