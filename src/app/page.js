@@ -37,6 +37,9 @@ export default function Home() {
     // this holds the error text when something goes wrong
     const [error, setError] = useState("");
 
+    // this holds the user's recent GitHub activity
+    const [activity, setActivity] = useState([]);
+
     // this runs when a user has picked a profile from the search results list
     async function analyseProfile(selectedUsername = username.trim()) {
 
@@ -55,6 +58,7 @@ export default function Home() {
         setRepositories([]);
         setAnalysis(null);
         setSearchResults([]);
+        setActivity([]);
 
         try {
 
@@ -83,6 +87,16 @@ export default function Home() {
 
             // store the repo data in a normal JavaScript array
             const repositoryData = await repositoryResponse.json();
+            // Fetch the user's recent public GitHub activity
+            const activityResponse = await fetch(
+                `https://api.github.com/users/${selectedUsername}/events/public?per_page=100`
+            );
+
+            let activityData = [];
+
+            if (activityResponse.ok) {
+                activityData = await activityResponse.json();
+            }
 
             // send the profile and repos to the local API route that builds the report
             const analysisResponse = await fetch(
@@ -146,6 +160,7 @@ export default function Home() {
         setRepositories([]);
         setAnalysis(null);
         setSearchResults([]);
+        setActivity([]);
 
         try {
 
