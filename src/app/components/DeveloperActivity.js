@@ -155,36 +155,56 @@ export default function DeveloperActivity({
     return (
 
         <section
-            className="
-                bg-white
-                border
-                border-[#d0d7de]
+            className={`
                 rounded-md
                 p-6
                 font-[Segoe_UI]
-                text-[#24292f]
-            "
+                border
+                ${
+                    theme === "dark"
+                    ? `
+                        bg-[#0d1117]
+                        border-[#30363d]
+                        text-[#f0f6fc]
+                    `
+                    :
+                    `
+                        bg-white
+                        border-[#d0d7de]
+                        text-[#24292f]
+                    `
+                }
+            `}
         >
 
 
             {/* Heading */}
 
             <h2
-                className="
+                className={`
                     text-lg
                     font-semibold
-                "
+                    ${
+                        theme === "dark"
+                        ? "text-[#f0f6fc]"
+                        : "text-[#24292f]"
+                    }
+                `}
             >
                 Developer Activity
             </h2>
 
 
             <p
-                className="
+                className={`
                     text-sm
-                    text-[#57606a]
                     mt-1
-                "
+                    ${
+                        theme === "dark"
+                        ? "text-[#8b949e]"
+                        : "text-[#57606a]"
+                    }
+                `}
             >
                 Repository updates over the last 30 days
             </p>
@@ -195,14 +215,25 @@ export default function DeveloperActivity({
             {/* Activity graph */}
 
             <div
-                className="
+                className={`
                     mt-6
                     border
-                    border-[#d8dee4]
                     rounded-md
                     p-4
                     h-44
-                "
+                    ${
+                        theme === "dark"
+                        ? `
+                            border-[#30363d]
+                            bg-[#161b22]
+                        `
+                        :
+                        `
+                            border-[#d8dee4]
+                            bg-white
+                        `
+                    }
+                `}
             >
 
                 <svg
@@ -223,7 +254,11 @@ export default function DeveloperActivity({
 
                         fill="none"
 
-                        stroke="#0969da"
+                        stroke={
+                            theme === "dark"
+                                ? "#58a6ff"
+                                : "#0969da"
+                        }
 
                         strokeWidth="3"
 
@@ -244,13 +279,17 @@ export default function DeveloperActivity({
             {/* Date labels */}
 
             <div
-                className="
+                className={`
                     flex
                     justify-between
                     text-xs
-                    text-[#57606a]
                     mt-2
-                "
+                    ${
+                        theme === "dark"
+                        ? "text-[#8b949e]"
+                        : "text-[#57606a]"
+                    }
+                `}
             >
 
                 <span>
@@ -271,24 +310,30 @@ export default function DeveloperActivity({
             {/* Statistics */}
 
             <div
-                className="
+                className={`
                     mt-6
                     border-t
-                    border-[#d8dee4]
+                    ${
+                        theme === "dark"
+                        ? "border-[#30363d]"
+                        : "border-[#d8dee4]"
+                    }
                     pt-4
                     space-y-3
-                "
+                `}
             >
 
                 <Stat
                     label="Updated repositories"
                     value={updatedRepositories}
+                    theme={theme}
                 />
 
 
                 <Stat
                     label="Languages"
                     value={languages}
+                    theme={theme}
                 />
 
 
@@ -297,6 +342,7 @@ export default function DeveloperActivity({
                     value={
                         totalStars.toLocaleString()
                     }
+                    theme={theme}
                 />
 
 
@@ -305,12 +351,14 @@ export default function DeveloperActivity({
                     value={
                         totalForks.toLocaleString()
                     }
+                    theme={theme}
                 />
 
 
                 <Stat
                     label="Member since"
                     value={memberSince}
+                    theme={theme}
                 />
 
 
@@ -333,7 +381,8 @@ export default function DeveloperActivity({
 
 function Stat({
     label,
-    value
+    value,
+    theme
 }) {
 
     return (
@@ -347,9 +396,13 @@ function Stat({
         >
 
             <span
-                className="
-                    text-[#57606a]
-                "
+                className={`
+                    ${
+                        theme === "dark"
+                        ? "text-[#8b949e]"
+                        : "text-[#57606a]"
+                    }
+                `}
             >
                 {label}
             </span>
