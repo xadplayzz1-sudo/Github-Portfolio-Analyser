@@ -10,6 +10,7 @@ import ProfileCard from "./components/ProfileCard";
 import RepositoryList from "./components/RepositoryList";
 import AnalysisReport from "./components/AnalysisReport";
 import ProfileChat from "./components/ProfileChat";
+import DeveloperActivity from "./components/DeveloperActivity";
 
 export default function Home() {
 
@@ -124,6 +125,7 @@ export default function Home() {
             // save the final profile data, repos, and report into state so the dashboard can render
             setProfile(profileData);
             setRepositories(repositoryData);
+            setActivity(activityData);
             setAnalysis(analysisData);
 
         } catch (err) {
@@ -414,8 +416,14 @@ export default function Home() {
                                 theme={theme}
                             />
 
-                        </div>
+                            <DeveloperActivity
+                                profile={profile}
+                                repositories={repositories}
+                                theme={theme}
+                            />
 
+                        </div>
+                        
                         <div className="space-y-6">
 
                             <AnalysisReport

@@ -1,19 +1,15 @@
 # GitHub Portfolio Analyser
 
-It is an online tool that analyses GitHub accounts and provides capability insights based on the similar framework to that of Talent3X. (You could say this is inspired by the same motives of the company.)
+A tool that analyses GitHub accounts and gives you capability insights based on their activity — kind of inspired by how Talent3X approaches this.
 
-## Features of this Project
+## What it does
 
-- Search for GitHub users
-- View their repositories
-- Analyse their abilities with their programming languages
-- Create a score ranking capability of the person
-- Have a UI that is responsive
+- Search any GitHub user
+- Browse their repos
+- See a breakdown of what languages they use and how well
+- Get a score/ranking based on their overall capability
+- Works on mobile too (responsive UI)
 
-## This was built using
+## Built with
 
-- Next.js
-- React
-- JavaScript
-- Tailwind CSS
-- GitHub REST API
+Next.js, React, JavaScript, Tailwind CSS, and the GitHub REST API

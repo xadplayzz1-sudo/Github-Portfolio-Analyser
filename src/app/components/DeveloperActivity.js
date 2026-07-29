@@ -1,510 +1,370 @@
-// Displays a visual summary of a developer's recent GitHub activity
+"use client";
 
 export default function DeveloperActivity({
-    repositories = [],
     profile,
+    repositories = [],
     theme
 }) {
 
-    // Don't show the section until a profile has been loaded
-    if (!profile || repositories.length === 0) {
-        return null;
-    }
+    /*
+        Creates the activity graph data.
 
-    // Current colour theme
-    const isDark = theme === "dark";
+        GitHub API does not provide a full contribution graph
+        without authentication, so we estimate activity using
+        repository update dates.
 
-    // Today's date
-    const today = new Date();
+        Each day gets a score based on repositories updated.
+    */
+    const generateActivity = () => {
 
-    // Stores the activity for the last 30 days
-    const activityData = [];
+        const days = [];
 
-    // Build the empty graph first
-    for (let i = 29; i >= 0; i--) {
+        const today = new Date();
 
-        const day = new Date(today);
 
-        day.setDate(today.getDate() - i);
+        for (let i = 29; i >= 0; i--) {
 
-        activityData.push({
-            date: day,
-            value: 0
-        });
+            const date = new Date();
 
-    }
+            date.setDate(
+                today.getDate() - i
+            );
 
-    // Overall statistics
-    let totalStars = 0;
-    let totalForks = 0;
 
-    const languages = new Set();
+            const count = repositories.filter(repo => {
 
-    let recentlyUpdated = 0;
+                const updated =
+                    new Date(repo.updated_at);
 
-    // Loop through every repository
-    repositories.forEach((repo) => {
 
-        totalStars += repo.stargazers_count;
-        totalForks += repo.forks_count;
-
-        if (repo.language) {
-            languages.add(repo.language);
-        }
-
-        const updated = new Date(repo.updated_at);
-
-        const daysAgo =
-            (today - updated) /
-            (1000 * 60 * 60 * 24);
-
-        // Count repositories updated recently
-        if (daysAgo <= 30) {
-            recentlyUpdated++;
-        }
-
-        // Add repository influence onto the graph
-        activityData.forEach((day) => {
-
-            const difference =
-                Math.abs(
-                    (updated - day.date) /
-                    (1000 * 60 * 60 * 24)
+                return (
+                    updated.getDate() === date.getDate() &&
+                    updated.getMonth() === date.getMonth() &&
+                    updated.getFullYear() === date.getFullYear()
                 );
 
-            // Nearby dates receive a larger score
-            if (difference < 12) {
+            }).length;
 
-                day.value +=
-                    Math.max(
-                        0,
-                        12 - difference
-                    ) *
-                    (
-                        1 +
-                        repo.stargazers_count / 25 +
-                        repo.forks_count / 50
-                    );
 
-            }
+            days.push(count);
 
-        });
+        }
 
-    });
 
-    // Round everything
-    activityData.forEach((day) => {
+        return days;
+    };
 
-        day.value = Math.round(day.value);
 
-    });
+    const activity =
+        generateActivity();
 
-    // Highest graph value
-    const highestPoint =
-        Math.max(
-            ...activityData.map(day => day.value),
-            1
-        );
 
-    // Calculate a simple activity score
-    const activityScore = Math.min(
-        100,
-        Math.round(
-            recentlyUpdated * 6 +
-            repositories.length * 2 +
-            languages.size * 5 +
-            totalStars * 0.3 +
-            totalForks * 0.15
-        )
-    );
 
-    // SVG size
-    const graphWidth = 340;
-    const graphHeight = 120;
-    const padding = 12;
+    /*
+        Finds the highest activity value.
 
-    // Convert graph values into SVG coordinates
-    const graphPoints = activityData
-        .map((day, index) => {
+        Used to scale the SVG graph.
+    */
+    const maxActivity =
+        Math.max(...activity, 1);
+
+
+
+    /*
+        Converts activity numbers into
+        SVG coordinates.
+    */
+    const graphPoints =
+        activity.map((value, index) => {
+
 
             const x =
-                padding +
-                index *
-                (
-                    (graphWidth - padding * 2) /
-                    (activityData.length - 1)
-                );
+                (index / 29) * 500;
+
 
             const y =
-                graphHeight -
-                padding -
-                (
-                    day.value /
-                    highestPoint
-                ) *
-                (
-                    graphHeight -
-                    padding * 2
-                );
+                100 -
+                ((value / maxActivity) * 80);
+
 
             return `${x},${y}`;
 
-        })
-        .join(" ");
+        }).join(" ");
+
+
+
+    /*
+        Repository statistics
+    */
+
+    const updatedRepositories =
+        repositories.filter(repo => {
+
+            const updated =
+                new Date(repo.updated_at);
+
+
+            const difference =
+                (new Date() - updated) /
+                (1000 * 60 * 60 * 24);
+
+
+            return difference <= 30;
+
+        }).length;
+
+
+
+    const languages =
+        [
+            ...new Set(
+                repositories
+                    .map(repo => repo.language)
+                    .filter(Boolean)
+            )
+        ].length;
+
+
+
+    const totalStars =
+        repositories.reduce(
+            (total, repo) =>
+                total + repo.stargazers_count,
+            0
+        );
+
+
+
+    const totalForks =
+        repositories.reduce(
+            (total, repo) =>
+                total + repo.forks_count,
+            0
+        );
+
+
+
+    const memberSince =
+        profile?.created_at
+            ? new Date(profile.created_at)
+                .getFullYear()
+            : "Unknown";
+
+
 
     return (
 
         <section
-            className={`rounded-[24px] border p-5 transition duration-300 ${
-                isDark
-                    ? "border-[#30363d] bg-[#161b22] shadow-[0_10px_28px_rgba(0,0,0,0.35)]"
-                    : "border-[#d0d7de] bg-white shadow-[0_10px_28px_rgba(31,35,40,0.08)]"
-            }`}
+            className="
+                bg-white
+                border
+                border-[#d0d7de]
+                rounded-md
+                p-6
+                font-[Segoe_UI]
+                text-[#24292f]
+            "
         >
-            {/* Section heading */}
-            <div className="mb-5 flex items-center justify-between">
 
-                <div>
 
-                    <h2
-                        className={`text-[1.35rem] font-bold ${
-                            isDark
-                                ? "text-[#f0f6fc]"
-                                : "text-[#24292f]"
-                        }`}
-                    >
-                        Developer Activity
-                    </h2>
+            {/* Heading */}
 
-                    <p
-                        className={`mt-1 text-sm ${
-                            isDark
-                                ? "text-[#8b949e]"
-                                : "text-[#57606a]"
-                        }`}
-                    >
-                        Repository activity calculated from recent updates,
-                        project popularity and portfolio size.
-                    </p>
+            <h2
+                className="
+                    text-lg
+                    font-semibold
+                "
+            >
+                Developer Activity
+            </h2>
 
-                </div>
 
-                <div
-                    className={`rounded-full px-4 py-2 text-sm font-semibold ${
-                        isDark
-                            ? "bg-[#0d1117] text-[#f0f6fc]"
-                            : "bg-[#f6f8fa] text-[#24292f]"
-                    }`}
-                >
-                    Activity Score {activityScore}
-                </div>
+            <p
+                className="
+                    text-sm
+                    text-[#57606a]
+                    mt-1
+                "
+            >
+                Repository updates over the last 30 days
+            </p>
 
-            </div>
 
-            {/* Graph area */}
+
+
+            {/* Activity graph */}
+
             <div
-                className={`rounded-[20px] border p-5 ${
-                    isDark
-                        ? "border-[#30363d] bg-[#0d1117]"
-                        : "border-[#d0d7de] bg-[#f6f8fa]"
-                }`}
+                className="
+                    mt-6
+                    border
+                    border-[#d8dee4]
+                    rounded-md
+                    p-4
+                    h-44
+                "
             >
 
                 <svg
-                    viewBox={`0 0 ${graphWidth} ${graphHeight}`}
-                    className="h-[170px] w-full"
-                    preserveAspectRatio="none"
+                    viewBox="
+                        0 0 500 120
+                    "
+                    className="
+                        w-full
+                        h-full
+                    "
                 >
 
-                    {/* Horizontal guide lines */}
-                    {[0, 1, 2, 3, 4].map((line) => (
-
-                        <line
-                            key={line}
-                            x1="0"
-                            x2={graphWidth}
-                            y1={
-                                padding +
-                                line *
-                                    (
-                                        (graphHeight - padding * 2) /
-                                        4
-                                    )
-                            }
-                            y2={
-                                padding +
-                                line *
-                                    (
-                                        (graphHeight - padding * 2) /
-                                        4
-                                    )
-                            }
-                            stroke={
-                                isDark
-                                    ? "#30363d"
-                                    : "#d8dee4"
-                            }
-                            strokeWidth="1"
-                        />
-
-                    ))}
-
-                    {/* Main activity line */}
                     <polyline
-                        points={graphPoints}
+
+                        points={
+                            graphPoints
+                        }
+
                         fill="none"
+
                         stroke="#0969da"
+
                         strokeWidth="3"
+
                         strokeLinecap="round"
+
                         strokeLinejoin="round"
+
                     />
-
-                    {/* Individual graph points */}
-                    {activityData.map((day, index) => {
-
-                        const x =
-                            padding +
-                            index *
-                                (
-                                    (graphWidth - padding * 2) /
-                                    (activityData.length - 1)
-                                );
-
-                        const y =
-                            graphHeight -
-                            padding -
-                            (
-                                day.value /
-                                highestPoint
-                            ) *
-                                (
-                                    graphHeight -
-                                    padding * 2
-                                );
-
-                        return (
-
-                            <circle
-                                key={index}
-                                cx={x}
-                                cy={y}
-                                r="3.5"
-                                fill="#0969da"
-                            />
-
-                        );
-
-                    })}
 
                 </svg>
 
-                <div
-                    className={`mt-3 flex justify-between text-xs ${
-                        isDark
-                            ? "text-[#8b949e]"
-                            : "text-[#57606a]"
-                    }`}
-                >
-
-                    <span>30 days ago</span>
-
-                    <span>Today</span>
-
-                </div>
 
             </div>
+
+
+
+
+            {/* Date labels */}
+
+            <div
+                className="
+                    flex
+                    justify-between
+                    text-xs
+                    text-[#57606a]
+                    mt-2
+                "
+            >
+
+                <span>
+                    30 days ago
+                </span>
+
+
+                <span>
+                    Today
+                </span>
+
+            </div>
+
+
+
+
 
             {/* Statistics */}
-            <div className="mt-5 grid grid-cols-2 gap-4">
-                {/* Total repositories */}
-                <div
-                    className={`rounded-[18px] border p-4 transition duration-300 ${
-                        isDark
-                            ? "border-[#30363d] bg-[#161b22]"
-                            : "border-[#d0d7de] bg-white"
-                    }`}
-                >
 
-                    <p
-                        className={`text-xs font-semibold uppercase tracking-wide ${
-                            isDark
-                                ? "text-[#8b949e]"
-                                : "text-[#57606a]"
-                        }`}
-                    >
-                        Repositories
-                    </p>
+            <div
+                className="
+                    mt-6
+                    border-t
+                    border-[#d8dee4]
+                    pt-4
+                    space-y-3
+                "
+            >
 
-                    <h3
-                        className={`mt-2 text-3xl font-bold ${
-                            isDark
-                                ? "text-[#f0f6fc]"
-                                : "text-[#24292f]"
-                        }`}
-                    >
-                        {repositories.length}
-                    </h3>
+                <Stat
+                    label="Updated repositories"
+                    value={updatedRepositories}
+                />
 
-                </div>
 
-                {/* Recently updated */}
-                <div
-                    className={`rounded-[18px] border p-4 transition duration-300 ${
-                        isDark
-                            ? "border-[#30363d] bg-[#161b22]"
-                            : "border-[#d0d7de] bg-white"
-                    }`}
-                >
+                <Stat
+                    label="Languages"
+                    value={languages}
+                />
 
-                    <p
-                        className={`text-xs font-semibold uppercase tracking-wide ${
-                            isDark
-                                ? "text-[#8b949e]"
-                                : "text-[#57606a]"
-                        }`}
-                    >
-                        Updated Recently
-                    </p>
 
-                    <h3
-                        className={`mt-2 text-3xl font-bold ${
-                            isDark
-                                ? "text-[#f0f6fc]"
-                                : "text-[#24292f]"
-                        }`}
-                    >
-                        {recentlyUpdated}
-                    </h3>
+                <Stat
+                    label="Total stars"
+                    value={
+                        totalStars.toLocaleString()
+                    }
+                />
 
-                </div>
 
-                {/* Languages */}
-                <div
-                    className={`rounded-[18px] border p-4 transition duration-300 ${
-                        isDark
-                            ? "border-[#30363d] bg-[#161b22]"
-                            : "border-[#d0d7de] bg-white"
-                    }`}
-                >
+                <Stat
+                    label="Total forks"
+                    value={
+                        totalForks.toLocaleString()
+                    }
+                />
 
-                    <p
-                        className={`text-xs font-semibold uppercase tracking-wide ${
-                            isDark
-                                ? "text-[#8b949e]"
-                                : "text-[#57606a]"
-                        }`}
-                    >
-                        Languages
-                    </p>
 
-                    <h3
-                        className={`mt-2 text-3xl font-bold ${
-                            isDark
-                                ? "text-[#f0f6fc]"
-                                : "text-[#24292f]"
-                        }`}
-                    >
-                        {languages.size}
-                    </h3>
+                <Stat
+                    label="Member since"
+                    value={memberSince}
+                />
 
-                </div>
-
-                {/* Total stars */}
-                <div
-                    className={`rounded-[18px] border p-4 transition duration-300 ${
-                        isDark
-                            ? "border-[#30363d] bg-[#161b22]"
-                            : "border-[#d0d7de] bg-white"
-                    }`}
-                >
-
-                    <p
-                        className={`text-xs font-semibold uppercase tracking-wide ${
-                            isDark
-                                ? "text-[#8b949e]"
-                                : "text-[#57606a]"
-                        }`}
-                    >
-                        Total Stars
-                    </p>
-
-                    <h3
-                        className={`mt-2 text-3xl font-bold ${
-                            isDark
-                                ? "text-[#f0f6fc]"
-                                : "text-[#24292f]"
-                        }`}
-                    >
-                        {totalStars}
-                    </h3>
-
-                </div>
-
-                {/* Total forks */}
-                <div
-                    className={`rounded-[18px] border p-4 transition duration-300 ${
-                        isDark
-                            ? "border-[#30363d] bg-[#161b22]"
-                            : "border-[#d0d7de] bg-white"
-                    }`}
-                >
-
-                    <p
-                        className={`text-xs font-semibold uppercase tracking-wide ${
-                            isDark
-                                ? "text-[#8b949e]"
-                                : "text-[#57606a]"
-                        }`}
-                    >
-                        Total Forks
-                    </p>
-
-                    <h3
-                        className={`mt-2 text-3xl font-bold ${
-                            isDark
-                                ? "text-[#f0f6fc]"
-                                : "text-[#24292f]"
-                        }`}
-                    >
-                        {totalForks}
-                    </h3>
-
-                </div>
-
-                {/* Account age */}
-                <div
-                    className={`rounded-[18px] border p-4 transition duration-300 ${
-                        isDark
-                            ? "border-[#30363d] bg-[#161b22]"
-                            : "border-[#d0d7de] bg-white"
-                    }`}
-                >
-
-                    <p
-                        className={`text-xs font-semibold uppercase tracking-wide ${
-                            isDark
-                                ? "text-[#8b949e]"
-                                : "text-[#57606a]"
-                        }`}
-                    >
-                        Member Since
-                    </p>
-
-                    <h3
-                        className={`mt-2 text-lg font-semibold ${
-                            isDark
-                                ? "text-[#f0f6fc]"
-                                : "text-[#24292f]"
-                        }`}
-                    >
-                        {new Date(profile.created_at).getFullYear()}
-                    </h3>
-
-                </div>
 
             </div>
 
+
         </section>
+
+    );
+
+}
+
+
+
+
+
+/*
+    Reusable statistic row.
+*/
+
+function Stat({
+    label,
+    value
+}) {
+
+    return (
+
+        <div
+            className="
+                flex
+                justify-between
+                text-sm
+            "
+        >
+
+            <span
+                className="
+                    text-[#57606a]
+                "
+            >
+                {label}
+            </span>
+
+
+            <span
+                className="
+                    font-medium
+                "
+            >
+                {value}
+            </span>
+
+
+        </div>
 
     );
 
